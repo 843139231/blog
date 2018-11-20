@@ -259,8 +259,26 @@ console.log(`getRow运行结果：${getRow(3)}`);
 let maxAreaOfIsland = function(grid) {
     console.log('给定一个包含了一些 0 和 1的非空二维数组 grid , 一个 岛屿 是由四个方向 (水平或垂直) 的 1 (代表土地) 构成的组合。你可以假设二维矩阵的四个边缘都被水包围着。');
     isArray(grid);
-    let size = 0;
-    
+    let size = 0, len = grid.length, k = grid[0].length;
+    if(len > 50){ throw new Error('宽度不能超过50') }
+    if(k > 50){ throw new Error('长度不能超过50') }
+    for(let i = 0; i < len; i++){
+        for(let j = 0; j < k; j++){
+            if(grid[i][j] == 1){
+                let n = island(grid, i, j, len, k);
+                size = Math.max(size, n);
+            }
+        }
+    }
+    function island(grid, i, j, len, k){
+        if(i >= 0 && i < len && j >= 0 && j < k && grid[i][j] == 1){
+            // 防止重复计算
+            grid[i][j] = 0;
+            // 计算四边形
+            return 1 + island(grid, i+1, j, len, k) + island(grid, i-1, j, len, k) + island(grid, i, j+1, len, k) + island(grid, i, j-1, len, k);
+        }
+        return 0;
+    }
     return size;
 };
 console.log(`maxAreaOfIsland运行结果：${maxAreaOfIsland([
