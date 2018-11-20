@@ -168,6 +168,113 @@ console.log(`isToeplitzMatrix运行结果：${isToeplitzMatrix([
 ])}`);
 
 /**
+ * 求众数
+ * 给定一个大小为 n 的数组，找到其中的众数。众数是指在数组中出现次数大于 ⌊ n/2 ⌋ 的元素。
+ * 难度：简单
+ * @param {number[]} nums
+ * @return {number}
+ */
+let majorityElement = function(nums) {
+    console.log('给定一个大小为 n 的数组，找到其中的众数。众数是指在数组中出现次数大于 ⌊ n/2 ⌋ 的元素。');
+    isArray(nums);
+    let result = '', len = nums.length;
+    if(!len){ throw new Error('数组不能为空') }
+    nums = nums.sort((a, b) => a - b);
+    // 最小满足条件
+    let minLen = len / 2;
+    // 当前元素重复数
+    let maxLen = 0;
+    let curryNum = '';
+    for(let num of nums){
+        if(num === curryNum){
+            maxLen++;
+        } else {
+            // 如果有一个满足条件就可以直接结束了，因为  当整个数组中 有至少一半是这个数，那么就再也没有比这个数多的了
+            if(maxLen >= minLen){ return curryNum; }
+            curryNum = num;
+            maxLen = 1;
+        }
+    }
+    // 保证最后一次也能正确计算在内
+    if(maxLen >= minLen){ result = curryNum; }
+    return result;
+};
+console.log(`majorityElement运行结果：${majorityElement([3,3,4])}`);
+
+/**
+ * 移动零
+ * 给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。
+ * 难度：简单
+ * @param {number[]} nums
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+let moveZeroes = function(nums) {
+    isArray(nums);
+    let len = 0;
+    if(nums.indexOf(0) == -1){ return nums }
+    for(let num of nums){
+        if(num === 0){ len++; }
+    }
+    for(let i = 0; i < len; i++){
+        nums.push(nums.splice(nums.indexOf(0), 1)[0]);
+    }
+    return nums;
+};
+console.log(`moveZeroes运行结果：${moveZeroes([0,1,0,3,12])}`);
+
+/**
+ * 杨辉三角 2
+ * 给定一个非负索引 k，其中 k ≤ 33，返回杨辉三角的第 k 行。
+ * 难度：简单
+ * @param {number} rowIndex
+ * @return {number[]}
+ */
+let getRow = function(rowIndex) {
+    console.log('给定一个非负索引 k，其中 k ≤ 33，返回杨辉三角的第 k 行。');
+    let arr = [];
+    for(let i = 0; i <= rowIndex; i++){
+        let temp = [];
+        for(let j = 0; j < i; j++){
+            if(j == 0){
+                temp.push(1);
+            } else {
+                temp.push((arr[i-1][j-1] ? arr[i-1][j-1] : 0) + arr[i-1][j]);
+            }
+        }
+        temp.push(1);
+        arr.push(temp);
+    }
+    return arr[rowIndex];
+};
+console.log(`getRow运行结果：${getRow(3)}`);
+
+/**
+ * 岛屿最大面积
+ * 给定一个包含了一些 0 和 1的非空二维数组 grid , 一个 岛屿 是由四个方向 (水平或垂直) 的 1 (代表土地) 构成的组合。你可以假设二维矩阵的四个边缘都被水包围着。
+ * 找到给定的二维数组中最大的岛屿面积。(如果没有岛屿，则返回面积为0。)
+ * 难度：简单
+ * @param {number[][]} grid
+ * @return {number}
+ */
+let maxAreaOfIsland = function(grid) {
+    console.log('给定一个包含了一些 0 和 1的非空二维数组 grid , 一个 岛屿 是由四个方向 (水平或垂直) 的 1 (代表土地) 构成的组合。你可以假设二维矩阵的四个边缘都被水包围着。');
+    isArray(grid);
+    let size = 0;
+    
+    return size;
+};
+console.log(`maxAreaOfIsland运行结果：${maxAreaOfIsland([
+    [0,0,1,0,0,0,0,1,0,0,0,0,0],
+    [0,0,0,0,0,0,0,1,1,1,0,0,0],
+    [0,1,1,0,1,0,0,0,0,0,0,0,0],
+    [0,1,0,0,1,1,0,0,1,0,1,0,0],
+    [0,1,0,0,1,1,0,0,1,1,1,0,0],
+    [0,0,0,0,0,0,0,0,0,0,1,0,0],
+    [0,0,0,0,0,0,0,1,1,1,0,0,0],
+    [0,0,0,0,0,0,0,1,1,0,0,0,0]
+])}`);
+
+/**
  * 三数之和
  * 给定一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？找出所有满足条件且不重复的三元组。
  * 难度：中等
