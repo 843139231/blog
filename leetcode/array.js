@@ -259,13 +259,14 @@ console.log(`getRow运行结果：${getRow(3)}`);
 let maxAreaOfIsland = function(grid) {
     console.log('给定一个包含了一些 0 和 1的非空二维数组 grid , 一个 岛屿 是由四个方向 (水平或垂直) 的 1 (代表土地) 构成的组合。你可以假设二维矩阵的四个边缘都被水包围着。');
     isArray(grid);
+    let visited = JSON.parse(JSON.stringify(grid));
     let size = 0, len = grid.length, k = grid[0].length;
     if(len > 50){ throw new Error('宽度不能超过50') }
     if(k > 50){ throw new Error('长度不能超过50') }
     for(let i = 0; i < len; i++){
         for(let j = 0; j < k; j++){
-            if(grid[i][j] == 1){
-                let n = island(grid, i, j, len, k);
+            if(visited[i][j] == 1){
+                let n = island(visited, i, j, len, k);
                 size = Math.max(size, n);
             }
         }
@@ -291,6 +292,51 @@ console.log(`maxAreaOfIsland运行结果：${maxAreaOfIsland([
     [0,0,0,0,0,0,0,1,1,1,0,0,0],
     [0,0,0,0,0,0,0,1,1,0,0,0,0]
 ])}`);
+
+/**
+ * 移除元素
+ * 给定一个数组 nums 和一个值 val，你需要原地移除所有数值等于 val 的元素，返回移除后数组的新长度。
+ * 不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。
+ * 元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
+ * 难度：简单
+ * @param {number[]} nums
+ * @param {number} val
+ * @return {number}
+ */
+let removeElement = function(nums, val) {
+    isArray(nums)
+    for(let i = 0, len = nums.length; i < len; i++){
+        if(nums[i] === val){
+            nums.splice(i, 1);
+            i--;
+        }
+    }
+    // console.log(nums);
+    return nums.length
+};
+console.log(`removeElement运行结果：${removeElement([3,2,2,3], 3)}`);
+
+/**
+ * 买卖股票的最佳时机
+ * 如果你最多只允许完成一笔交易（即买入和卖出一支股票），设计一个算法来计算你所能获取的最大利润。
+ * 难度：简单
+ * @param {number[]} prices
+ * @return {number}
+ */
+let maxProfit = function(prices) {
+    console.log('如果你最多只允许完成一笔交易（即买入和卖出一支股票），设计一个算法来计算你所能获取的最大利润。');
+    isArray(prices);
+    let len = prices.length;
+    if(len < 2){ return 0 }
+    let min = prices[0];
+    let max = 0;
+    prices.forEach(item => {
+        max = Math.max(max, item - min);
+        min = Math.min(min, item);
+    });
+    return max
+};
+console.log(`maxProfit运行结果：${maxProfit([7,1,5,3,6,4])}`);
 
 /**
  * 三数之和
