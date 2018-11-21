@@ -339,6 +339,105 @@ let maxProfit = function(prices) {
 console.log(`maxProfit运行结果：${maxProfit([7,1,5,3,6,4])}`);
 
 /**
+ * 最大连续1的个数
+ * 给定一个二进制数组， 计算其中最大连续1的个数。
+ * 难度：简单
+ * @param {number[]} nums
+ * @return {number}
+ */
+let findMaxConsecutiveOnes = function(nums) {
+    console.log('给定一个二进制数组， 计算其中最大连续1的个数。');
+    isArray(nums);
+    let len = nums.length;
+    if(len < 1 || len > 10000){ throw new Error('数组长度不正确') }
+    if(nums.indexOf(1) == -1){ return 0 }
+    // let n = 0, arr = [];
+    // nums.forEach(item => {
+    //     if(item === 1){
+    //         n++;
+    //     } else if(item === 0 && n > 0){
+    //         arr.push(n);
+    //         n = 0;
+    //     }
+    // });
+    // if(n > 0){
+    //     arr.push(n);
+    //     n = 0;
+    // }
+    // console.log(arr);
+    // let max = Math.max.apply(null, arr);
+    // let max = Math.max(...nums.join('').split('0').map(item => item.length));
+    let max = 0, curr = 0;
+    nums.map(item => {
+        if(item === 1){
+            max = max > curr ? curr++ : curr;
+        } else {
+            curr = 0;
+        }
+    });
+    return max;
+};
+console.log(`findMaxConsecutiveOnes运行结果：${findMaxConsecutiveOnes([1,1,0,1,1,1])}`);
+
+/**
+ * 买卖股票的最佳时机2
+ * 给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。
+ * 设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。
+ * 难度：简单
+ * @param {number[]} prices
+ * @return {number}
+ */
+let maxProfit2 = function(prices) {
+    console.log('设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。');
+    isArray(prices);
+    let len = prices.length;
+    if(len == 0){ return 0 }
+    // // 买入价、利润
+    // let buy = new Array(len),
+    //     sell = new Array(len);
+        
+    // buy[0] = prices[0];
+    // sell[0] = 0;
+    // for(let i = 1; i < len; i++){
+    //     buy[i] = Math.min(buy[i - 1], prices[i] - sell[i-1]);
+    //     sell[i] = Math.max(sell[i - 1], prices[i] - buy[i-1]);
+    // }
+    let max = 0;
+    prices.forEach((item, i) => {
+        let d = item - prices[i-1];
+        d > 0 ? max += d : '';
+    });
+    return max;
+};
+console.log(`maxProfit2运行结果：${maxProfit2([7,1,5,3,6,4])}`);
+
+/**
+ * 缺失数字
+ * 给定一个包含 0, 1, 2, ..., n 中 n 个数的序列，找出 0 .. n 中没有出现在序列中的那个数。
+ * 难度：简单
+ * @param {number[]} nums
+ * @return {number}
+ */
+var missingNumber = function(nums) {
+    console.log('给定一个包含 0, 1, 2, ..., n 中 n 个数的序列，找出 0 .. n 中没有出现在序列中的那个数。');
+    isArray(nums);
+    let n = nums.length;
+    if(n < 1){ return 0 }
+    if(n < 2){ return nums[0] > 0 ? nums[0]-1 : nums[0]+1 }
+    nums = nums.sort((a, b) => a - b);
+    let num = nums[0] - 1;
+    nums.some((item, i) => {
+        if(item+1 < nums[i+1]){
+            num = item+1;
+            return;
+        }
+    });
+    num = num >= 0 ? num : nums[n-1]+1;
+    return num;
+};
+console.log(`missingNumber运行结果：${missingNumber([0,2])}`);
+
+/**
  * 三数之和
  * 给定一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？找出所有满足条件且不重复的三元组。
  * 难度：中等
