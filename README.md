@@ -1,5 +1,8 @@
 ### 每日总结
 
+#### 每天小记
+* [2018](/conclusion/2018.md)
+
 #### lettCode练习
 * [数组](/leetcode/array.js)
 
