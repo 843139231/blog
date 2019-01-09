@@ -7,7 +7,7 @@
 * [数组](/leetcode/array.js)
 
 ### 2019年
-* [11月每日阅读总结](/the-daily-summary/year/2019/1.md)
+* [1月每日阅读总结](/the-daily-summary/year/2019/1.md)
 
 #### 2018年
 * [11月每日阅读总结](/the-daily-summary/year/2018/11.md)
