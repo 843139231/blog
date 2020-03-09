@@ -111,6 +111,32 @@ document.title = '二叉树';
             postOrderTraverseNode(root, callback);
         };
         /**
+         * 广度遍历
+         */
+        this.breadthOrderTraverse = callback => {
+            breadthOrderTraverseNode(root, callback);
+        };
+        /**
+         * 广度遍历
+         * @param {Object} node 遍历节点
+         * @param {Function} callback 回调
+         */
+        const breadthOrderTraverseNode = (node, callback) => {
+            if(node !== null){
+                let que = [node];
+                while(que.length !== 0){
+                    node = que.shift();
+                    callback(node.data);
+                    if(node.left){
+                        que.push(node.left);
+                    }
+                    if(node.right){
+                        que.push(node.right);
+                    }
+                }
+            }
+        };
+        /**
          * 查询树中最小值
          */
         this.min = () => {
@@ -245,6 +271,9 @@ function test1(){
     });
     nums.postOrderTraverse(data => {
         console.log(`postOrderTraverse: ${data}`);
+    });
+    nums.breadthOrderTraverse(data => {
+        console.log(`breadthOrderTraverse: ${data}`);
     });
     console.log(nums);
 }
