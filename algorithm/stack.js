@@ -1,6 +1,6 @@
 document.title = '栈';
 
-((w, d) => {
+((w, d, undefined) => {
     /**
      * clear 清空栈
      * push 压入栈
