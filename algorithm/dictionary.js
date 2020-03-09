@@ -41,4 +41,5 @@ document.title = '字典';
 			this.datastore = {};
 		}
 	}
+	w.Dictionary = Dictionary;
 })(window, document);
