@@ -13,6 +13,7 @@ document.title = '二叉树';
             this.left = null;
             this.right = null;
         }
+        this.length = 0;
         // 根节点
         let root = null;
         /**
@@ -26,6 +27,7 @@ document.title = '二叉树';
          */
         this.insert = data => {
             let newNode = new Node(data);
+            this.length++;
             if(root == null){
                 root = newNode;
                 return;
