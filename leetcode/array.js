@@ -532,3 +532,349 @@ function SumClosest(num, target){
 
 // let num = SumClosest([-1, 2, 1, -4, 7, 10, 5, 20], 10);
 // console.log(`SumClosest 运算结果：${num}`);
+
+/**
+ * 验证回文串
+ * 给定一个字符串，验证它是否是回文串，只考虑字母和数字字符，可以忽略字母的大小写。
+ * 难度：简单
+ * @param {String} s 需要验证的字符串
+ * @return {Boolean} 是否为回文字符串
+ */
+var isPalindrome = function(s){
+    // var reg= /^[A-Za-z0-9]+$/;
+    // let list = s.toLowerCase().split('').filter(item => reg.test(item));
+    // console.log(list);
+    // return list.join('') == list.reverse().join('');
+    let str = s.replace(/\W/g, '').toLowerCase(),
+        left = 0,
+        right = str.length - 1;
+    while(left < right){
+        if(str[left] !== str[right]){
+            return false;
+        }
+        left++;
+        right--;
+    }
+    return true;
+}
+
+console.log(`输入: "A man, a plan, a canal: Panama"， 输出${isPalindrome("A man, a plan, a canal: Panama")}`);
+console.log(`输入: "race a car"， 输出${isPalindrome("race a car")}`);
+console.log(`输入: "0P"， 输出${isPalindrome("0P")}`);
+
+/**
+ * 两数之和
+ * 给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
+ * 你可以假设每种输入只会对应一个答案。但是，数组中同一个元素不能使用两遍。
+ * 难度：简单
+ * @param {Array} nums 整数数组
+ * @param {Number} target 目标值
+ */
+let twoSum = function(nums, target){
+    // let i = 0;
+    // let len = nums.length;
+    // while(i < len){
+    //     let n = target - nums[i];
+    //     let k = nums.indexOf(n);
+    //     if(k != -1 && k != i){
+    //         return [i, k];
+    //     }
+    //     i++;
+    // }
+    // throw new Error('数据不正确');
+    let map = new Map();
+    for(let i = 0, len = nums.length; i < len; i++){
+        let num = nums[i];
+        let dif = target - num;
+        if(map.has(dif)){
+            return [map.get(dif), i];
+        }
+        map.set(num, i);
+    };
+}
+
+console.log(`给定 nums = [2, 7, 11, 15], target = 9  结果：${twoSum([2, 7, 11, 15], 9)}`);
+console.log(`给定 nums = [3, 2, 4], target = 6  结果：${twoSum([3, 2, 4], 6)}`);
+
+/**
+ * 两数相加
+ * 给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。
+ * 如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。
+ * 您可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+ * 难度：中等
+ * @param {ListNode} l1 第一个数组
+ * @param {ListNode} l2 第二个数组
+ * @return {ListNode} 加起来后的逆向数组
+ */
+/**
+ * Definition for singly-linked list.
+ */
+function ListNode(val) {
+    this.val = val;
+    this.next = null;
+}
+var addTwoNumbers = function(l1, l2){
+    // let len = Math.max.apply(Math, [l1.length, l2.length]);
+    // let arr = [];
+    // for(let i = 0; i < len; i++){
+    //     let n1 = l1[i];
+    //     let n2 = l2[i];
+    //     let n = n1 + n2;
+    //     n = String(n).split('');
+    //     arr.push(n.splice(-1)[0]);
+    //     l1[i+1] = l1[i+1]+Number(n.join(''));
+    // }
+    // console.log(arr);
+    // return arr;
+    let node = new ListNode('head');
+    let temp = node, sum, n = 0;
+    while(l1 || l2){
+        let n1 = l1 ? l1.val : 0;
+        let n2 = l2 ? l2.val : 0;
+        sum = n1 + n2 + n;
+        temp.next = new ListNode(sum % 10);
+        temp = temp.next;
+        n = parseInt( sum / 10, 10 );
+        if(l1){
+            l1 = l1.next;
+        }
+        if(l2){
+            l2 = l2.next;
+        }
+    }
+    if(n != 0){
+        temp.next = new ListNode(n);
+        temp = temp.next;
+    }
+    return node.next;
+};
+
+console.log(`输入：(2 -> 4 -> 3) + (5 -> 6 -> 4)  输出：${addTwoNumbers([2, 4, 3], [5, 6, 4])}`);
+
+/**
+ * 模式匹配
+ * 你有两个字符串，即pattern和value。 pattern字符串由字母"a"和"b"组成，用于描述字符串中的模式。
+ * 例如，字符串"catcatgocatgo"匹配模式"aabab"（其中"cat"是"a"，"go"是"b"），该字符串也匹配像"a"、"ab"和"b"这样的模式。
+ * 但需注意"a"和"b"不能同时表示相同的字符串。编写一个方法判断value字符串是否匹配pattern字符串。
+ * 难度：中等
+ * @param {String} pattern 模式匹配规则
+ * @param {String} value 需要匹配的字符串
+ * @return {Boolean} 是否匹配
+ */
+var patternMatching = function(pattern, value){
+    // 根据遍历值的starta和startb模拟出string和value做比较
+    function getPatternStr(stra, strb){
+        let arr = [];
+        pattern.split('').forEach(item => {
+            if(item === 'a'){
+                arr.push(stra);
+            } else if(item == 'b'){
+                arr.push(strb);
+            }
+        });
+        return arr.join('');
+    }
+    // 边界值判断
+    if(!pattern){
+        return value === '';
+    }
+    if(pattern.length == 1){
+        return true;
+    }
+    if(pattern && !value){
+        return false;
+    }
+    let p_len = pattern.length, v_len = value.length;
+    if(p_len == 1){
+        return true;
+    }
+    // 只有 a 或者 b的情况
+    if(pattern.indexOf('a') === -1 || pattern.indexOf('b') === -1){
+        // 如果不能整除，代表不重复
+        if(v_len % p_len !== 0){
+            return false;
+        }
+        // 切割验证
+        let str = value.substring(0, parseInt(v_len / p_len, 10));
+        if(new Array(p_len).fill(str).join('') === value){
+            return true;
+        }
+        return false;
+    }
+    // a、b都存在的情况
+    // 先行计算，得出 a，b 出现的次数
+    let aLen = 0, bLen = 0;
+    pattern.split('').forEach(item => {
+        if(item === 'a'){
+            aLen++;
+        } else if(item == 'b'){
+            bLen++;
+        }
+    });
+    // 边界值判断
+    if(aLen == 1 || bLen == 1){
+        return true;
+    }
+    /**
+     * aLen * a_str + bLen * b_str = value.length
+     * a_str，b_str 可以为 ''，且 a_str不能与b_str相等
+     */
+    let la, lb;
+    // 遍历 la的长度，根据la的长度遍历 lb的长度，针对 aLen、bLen为0的边界值做处理
+    let maxA = Math.floor(v_len / aLen); // 最大a的长度
+    for(la = 0; la < maxA; la++){
+        // 计算出 当前a字符串下，b的字符
+        let allLb = v_len - la * aLen;
+        if(allLb % bLen === 0){
+            lb = parseInt(allLb / bLen, 10);
+            // 继续去计算a代表的值a_str，b代表的值b_str
+            let a_str = '', b_str = '';
+            if(pattern.charAt(0) === 'a'){
+                // 根据位置截取aStr
+                a_str = value.substring(0, la);
+                let index = pattern.indexOf('b');
+                b_str = value.substring(index * la, index * la + lb);
+                // 两个字符串相同，舍弃这次结果
+                if(a_str === b_str){
+                    continue;
+                }
+                // 计算模拟的值和value值是否相等
+                if(getPatternStr(a_str, b_str) === value){
+                    return true;
+                }
+            } else {
+                // 根据位置截取出bStr
+                b_str = value.substring(0, lb);
+                let index = pattern.indexOf('a');
+                a_str = value.substring(index * lb, index * lb + la);
+                // 两个字符串相同，舍弃这次结果
+                if(a_str === b_str){
+                    continue;
+                }
+                // 计算模拟的值和value值是否相等
+                console.log(getPatternStr(a_str, b_str), value, a_str, b_str);
+                if(getPatternStr(a_str, b_str) === value){
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+};
+
+console.log(`输入： pattern = "abba", value = "dogcatcatdog"   输出：${patternMatching('abba', 'dogcatcatdog')}`);
+console.log(`输入： pattern = "abba", value = "dogcatcatfish"   输出：${patternMatching('abba', 'dogcatcatfish')}`);
+console.log(`输入： pattern = "aaaa", value = "dogcatcatdog"   输出：${patternMatching('aaaa', 'dogcatcatdog')}`);
+console.log(`输入： pattern = "abba", value = "dogdogdogdog"   输出：${patternMatching('abba', 'dogdogdogdog')}`);
+console.log(`输入： pattern = "bbbbbbbbbbbbbbabbbbb", value = "ppppppppppppppjsftcleifftfthiehjiheyqkhjfkyfckbtwbelfcgihlrfkrwireflijkjyppppg"   输出：${patternMatching('bbbbbbbbbbbbbbabbbbb', 'ppppppppppppppjsftcleifftfthiehjiheyqkhjfkyfckbtwbelfcgihlrfkrwireflijkjyppppg')}`);
+
+/**
+ * 二进制求和
+ * 给你两个二进制字符串，返回它们的和（用二进制表示）。
+ * 输入为 非空 字符串且只包含数字 1 和 0。
+ * 难度：简单
+ * @param {String} a 
+ * @param {String} b 
+ * @return {String}
+ */
+var addBinary = function(a, b){
+    a = a.split('').reverse();
+    b = b.split('').reverse();
+    let len = Math.max.apply(Math, [a.length, b.length]);
+    let arr = [];
+    let n = 0;
+    for(let i = 0; i < len; i++){
+        let num = Number(a[i] || 0) + Number(b[i] || 0) + n;
+        n = 0;
+        if(num > 1){
+            arr.push(num % 2);
+            n = 1;
+        } else {
+            arr.push(num);
+        }
+    }
+    if(n != 0){
+        arr.push(n);
+    }
+    return arr.reverse().join('');
+}
+
+console.log(`输入: a = "11", b = "1"   输出：${addBinary('11', '1')}`);
+console.log(`输入: a = "1010", b = "1011"   输出：${addBinary('1010', '1011')}`);
+
+/**
+ * 整数反转
+ * 给出一个 32 位的有符号整数，你需要将这个整数中每位上的数字进行反转。
+ * 难度：简单
+ * @param {Number} x 需要反转的数字
+ * @return {Number}
+ */
+var reverse = function(x){
+    let n = Math.abs(x);
+    let max = Math.pow(2, 31);
+    // 暴力法
+    // n = Number(String(n).split('').reverse().join(''));
+    // if(n > max){
+    //     return 0;
+    // }
+    // return x < 0 ? '-'+n : n;
+    let num = 0;
+    // 取余法
+    while(n > 0){
+        num = num * 10 + n % 10;
+        n = Math.floor(n / 10);
+    }
+    return x < 0 ? num <= max ? -num : 0 : num < max ? num : 0;
+}
+console.log(`输入 1534236469   输出：${reverse('1534236469')}`);
+console.log(`输入 123   输出：${reverse('123')}`);
+
+
+/**
+ * 无重复字符的最长子串
+ * 给定一个字符串，请你找出其中不含有重复字符的最长子串的长度
+ * 难度：中等
+ * @param {Sring} s 字符串
+ * @return {Number} 不含重复字符的最长子串的长度
+ */
+var lengthOfLongestSubstring = function(s){
+    if(!s){
+        return 0;
+    }
+    let arr = s.split('');
+    let sList = [];
+    let strs = [];
+    // 筛选出无重复项的单字母
+    arr.forEach(str => {
+        if(!sList.includes(str)){
+            sList.push(str)
+        }
+    });
+    // 判断字符，在字符串中出现次数
+    function patch(str, re){
+        re = eval('/'+re+'/ig');
+        let a = str.match(re);
+        return a ? a.length : 0;
+    }
+    for(let i = 0, len = arr.length; i < len; i++){
+        let n = 1;
+        strs.push(arr[i]);
+        while(n < len){
+            n++;
+            let str = s.substring(i, n);
+            let flg = sList.some(item => {
+                console.log(patch(str, item), str, item);
+                return patch(str, item) > 1;
+            });
+            if(str && !flg){
+                strs.push(str);
+            }
+        }
+    }
+    return Math.max.apply(Math, strs.map(str => {
+        return str.length;
+    }));
+}
+
+// console.log(`输入："abcabcbb"    输出：${lengthOfLongestSubstring('abcabcbb')}`);
+console.log(`输入："pwwkew"    输出：${lengthOfLongestSubstring('pwwkew')}`);
